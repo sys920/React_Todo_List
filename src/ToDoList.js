@@ -5,60 +5,68 @@ import ToDo from './ToDo';
 
 class ToDoList extends Component {
   state = {
-    toDo :"",
+    title :"",
     toDoLists : []
   }
-  
+ 
+  componentDidMount() {
+
+    fetch('https://jsonplaceholder.typicode.com/todos/')
+    .then(response => response.json())
+    .then(data => this.setState({ toDoLists : data}));         
+  }
+    
   formSubmit = (event) => {
     event.preventDefault();
 
        if (this.state.toDo !== "") {    
         this.setState((prevState) => ({
-          toDo :"",     
-          toDoLists : [...prevState.toDoLists, {toDo:prevState.toDo, completed:false, randomNum: Math.random()}]
+          title :"",     
+          toDoLists : [{title:prevState.title, completed:false, id:Math.random()},...prevState.toDoLists ]
         }))
       }
   }
 
   updateInput = (event) => {
     this.setState({
-      toDo : event.target.value
+      title : event.target.value
     })
   }
 
-  delelteList = (randomNum) => {  
+  delelteList = (id) => {  
+    console.log(id)
     this.setState((previousState) => ({
       toDoLists : previousState.toDoLists.filter((list) => {
-        return list.randomNum !== randomNum;
+        return list.id !== id;
       })
     }))
   }
 
-  completeList = (randomNum, toDo) => { 
+  completeList = (id, title) => { 
     this.setState((previousState) => ({
       toDoLists : previousState.toDoLists.filter((list) => {
-        return list.randomNum !== randomNum;
+        return list.id !== id;
       })        
     }));
 
     this.setState((prevState) => ({
-      toDoLists : [...prevState.toDoLists, {toDo:toDo, completed:true, randomNum: Math.random()}]
+      toDoLists : [...prevState.toDoLists, {title:title, completed:true, id: Math.random()}]
     }))
   }
   
-  inCompleteList = (randomNum, toDo) => {  
+  inCompleteList = (id, title) => {  
     this.setState((previousState) => ({
       toDoLists : previousState.toDoLists.filter((list) => {
-        return list.randomNum !== randomNum;
+        return list.id !== id;
       })        
     }));
 
     this.setState((prevState) => ({
-      toDoLists : [...prevState.toDoLists, {toDo:toDo, completed:false, randomNum: Math.random()}]
+      toDoLists : [{title:title, completed:false, id:  Math.random()},...prevState.toDoLists]
     }))
 
   }
-
+  
   render() {
     return (
       <div className="main">
@@ -66,7 +74,7 @@ class ToDoList extends Component {
         <form onSubmit = {this.formSubmit}>
           <input
             type="text"
-            value={this.state.toDo}
+            value={this.state.title}
             onChange={this.updateInput} 
             placeholder="Enter what you're going to do"
           />
@@ -74,11 +82,11 @@ class ToDoList extends Component {
         </form>
       
           <div>
-            <div id="toDoTitle">TODO </div>
+            <div id="toDoTitle">TODO</div>
             <div>
-                {this.state.toDoLists.filter( list => list.completed !== true).slice(0).reverse().map( list =>
-                  <ToDo key={list.toDo} completeList={this.completeList} delelteList={this.delelteList} toDo={list.toDo} 
-                  randomNum={list.randomNum} isCompleted={list.completed}/>   
+                {this.state.toDoLists.filter( list => list.completed !== true).map( list =>
+                  <ToDo key={list.id} completeList={this.completeList} delelteList={this.delelteList} title={list.title} 
+                  id={list.id} isCompleted={list.completed}/>   
                 )}
             </div>  
           </div>
@@ -89,7 +97,8 @@ class ToDoList extends Component {
             <div id="completedTitle">COMPLETED</div>
             <div>
               {this.state.toDoLists.filter( list => list.completed === true).map( list =>
-                <ToDo key={list.toDo} inCompleteList={this.inCompleteList} delelteList={this.delelteList} toDo={list.toDo} randomNum={list.randomNum} isCompleted={list.completed}/>   
+                <ToDo key={list.id} inCompleteList={this.inCompleteList} delelteList={this.delelteList} title={list.title} 
+                id={list.id} isCompleted={list.completed}/>   
               )} 
             </div>
           </div>

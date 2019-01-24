@@ -7,18 +7,18 @@ class ToDo extends Component {
     return(
       <div>
         <div id="toDoText">
-          {this.props.toDo} 
+          {this.props.title} 
         </div> 
 
         { this.props.isCompleted ?
         <span > 
-            <button  className="completeButton" onClick = { () => {this.props.inCompleteList(this.props.randomNum, this.props.toDo)} }>Incomplete</button>
-            <button  className="delButton" onClick = { () => {this.props.delelteList(this.props.randomNum)} }>Delete</button>
+            <button  className="completeButton" onClick = { () => {this.props.inCompleteList(this.props.id, this.props.title)} }>Incomplete</button>
+            <button  className="delButton" onClick = { () => {this.props.delelteList(this.props.id)} }>Delete</button>
         </span>
         :            
         <span>
-          <button  className="completeButton" onClick = { () => {this.props.completeList(this.props.randomNum, this.props.toDo)} }>Complete</button>
-          <button  className="delButton" onClick = { () => {this.props.delelteList(this.props.randomNum)} }>Delete</button> 
+          <button  className="completeButton" onClick = { () => {this.props.completeList(this.props.id, this.props.title)} }>Complete</button>
+          <button  className="delButton" onClick = { () => {this.props.delelteList(this.props.id)} }>Delete</button> 
         </span>
         }
 
