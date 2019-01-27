@@ -2,21 +2,23 @@ import React, { Component } from 'react';
 import './App.css';
 import PropTypes from 'prop-types';
 import ToDo from './ToDo';
+import download from'./download.json'
 
 class ToDoList extends Component {
   state = {
     title :"",
-    toDoLists : []
+    toDoLists : [],
   }
- 
+  
   componentDidMount() {
 
-    fetch('https://jsonplaceholder.typicode.com/todos/')
-    .then(response => response.json())
-    .then(data => this.setState({ toDoLists : data}));         
+    // fetch(download)
+    // .then(response => response.json())
+    // .then(data => this.setState({toDoLists : data}));   
+    this.setState({toDoLists : download});        
   }
     
-  formSubmit = (event) => {
+  addNewTask = (event) => {
     event.preventDefault();
 
        if (this.state.toDo !== "") {    
@@ -34,7 +36,6 @@ class ToDoList extends Component {
   }
 
   delelteList = (id) => {  
-    console.log(id)
     this.setState((previousState) => ({
       toDoLists : previousState.toDoLists.filter((list) => {
         return list.id !== id;
@@ -71,7 +72,7 @@ class ToDoList extends Component {
     return (
       <div className="main">
         <h1>Make your ToDo List !</h1>
-        <form onSubmit = {this.formSubmit}>
+        <form onSubmit = {this.addNewTask}>
           <input
             type="text"
             value={this.state.title}
@@ -84,26 +85,26 @@ class ToDoList extends Component {
           <div>
             <div id="toDoTitle">TODO</div>
             <div>
-                {this.state.toDoLists.filter( list => list.completed !== true).map( list =>
+                {this.state.toDoLists.filter( (list) => !list.completed).map( list =>
                   <ToDo key={list.id} completeList={this.completeList} delelteList={this.delelteList} title={list.title} 
                   id={list.id} isCompleted={list.completed}/>   
                 )}
             </div>  
           </div>
          
-            {this.state.toDoLists.filter( list => list.completed !== true).length === 0 &&  <div className="empty">Nothing to do</div>}
+            {this.state.toDoLists.filter( (list) => !list.completed).length === 0 &&  <div className="empty">Nothing to do</div>}
          
           <div>
             <div id="completedTitle">COMPLETED</div>
             <div>
-              {this.state.toDoLists.filter( list => list.completed === true).map( list =>
+              {this.state.toDoLists.filter( (list) => list.completed).map( list =>
                 <ToDo key={list.id} inCompleteList={this.inCompleteList} delelteList={this.delelteList} title={list.title} 
                 id={list.id} isCompleted={list.completed}/>   
               )} 
             </div>
           </div>
 
-            {this.state.toDoLists.filter( list => list.completed === true).length === 0 &&  <div className="empty">Nothing completed</div>}      
+            {this.state.toDoLists.filter( (list) => list.completed).length === 0 &&  <div className="empty">Nothing completed</div>}      
       </div>
     );
   }

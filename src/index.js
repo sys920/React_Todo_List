@@ -2,7 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import ToDoList from './ToDoList';
+import {  BrowserRouter } from 'react-router-dom'
 
-ReactDOM.render(<ToDoList />, document.getElementById('root'));
+
+ReactDOM.render(
+<BrowserRouter>
+  <ToDoList />
+</BrowserRouter>
+, document.getElementById('root'));
 
 
