@@ -6,6 +6,7 @@
 ./public/index.html : run Todo list on webbrowser 
 ./src/ToDoList.js : main source code of todo list 
 ./src/ToDo.js : The component of all Todolists  
+./src/data/download.json : This todo list' sample data starts from  download.json  
 
 # Requirements:
 - Your Todo list should consist of 1 text input and 1 submit button.
